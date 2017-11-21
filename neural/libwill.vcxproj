@@ -125,6 +125,7 @@
     <ClCompile Include="src\DataPreparerTxt.cpp" />
     <ClCompile Include="src\File.cpp" />
     <ClCompile Include="src\DataPreparer.cpp" />
+    <ClCompile Include="src\LayerCombine.cpp" />
     <ClCompile Include="src\LayerCreator.cpp" />
     <ClCompile Include="src\Net.cpp" />
     <ClCompile Include="src\MatrixFiller.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="src\DataPreparerTxt.h" />
     <ClInclude Include="src\File.h" />
     <ClInclude Include="src\DataPreparer.h" />
+    <ClInclude Include="src\LayerCombine.h" />
     <ClInclude Include="src\LayerCreator.h" />
     <ClInclude Include="src\mythapi.h" />
     <ClInclude Include="src\Net.h" />

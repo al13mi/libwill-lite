@@ -4,6 +4,7 @@
 #include "LayerPooling.h"
 #include "LayerDirect.h"
 #include "LayerNone.h"
+#include "LayerCombine.h"
 
 Layer* LayerCreator::createByConnectionType(LayerConnectionType connection_type)
 {
@@ -24,6 +25,9 @@ Layer* LayerCreator::createByConnectionType(LayerConnectionType connection_type)
         break;
     case LAYER_CONNECTION_NONE:
         layer = new LayerNone();
+        break;
+    case LAYER_CONNECTION_COMBINE:
+        layer = new LayerCombine();
         break;
     default:
         layer = new Layer();

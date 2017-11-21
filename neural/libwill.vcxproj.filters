@@ -142,6 +142,9 @@
     <ClCompile Include="src\DataPreparerTxt.cpp">
       <Filter>data</Filter>
     </ClCompile>
+    <ClCompile Include="src\LayerCombine.cpp">
+      <Filter>layer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\others\libconvert.h">
@@ -264,6 +267,9 @@
     </ClInclude>
     <ClInclude Include="lib\include\cblas.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LayerCombine.h">
+      <Filter>layer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
