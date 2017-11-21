@@ -41,7 +41,7 @@ void LayerPooling::init2()
     X_ = new Matrix(out_width_, out_height_, out_channel_, batch_);
     dX_ = new Matrix(X_);
 
-    pooling_type_ = option_->getPoolingTypeFromSection(layer_name_, "pool_type", reverse_ == 0 ? "max" : "average");
+    pooling_type_ = option_->getEnumFromSection(layer_name_, "pool_type", reverse_ == 0 ? POOLING_MAX : POOLING_AVERAGE_NOPADDING);
 
     nearest_ = option_->getIntFromSection(layer_name_, "nearest", 1);
 

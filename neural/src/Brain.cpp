@@ -62,7 +62,7 @@ int Brain::init(const std::string& ini_file)
     if (MP_count_ <= 0) { MP_count_ = 1; }
     batch_ = std::max(1, option_->getInt("batch", 100));
 
-    work_mode_ = option_->getWorkModeType("work_mode", "normal");
+    work_mode_ = option_->getEnum("work_mode", WORK_MODE_NORMAL);
 
     initNets();
     initDataPreparer();

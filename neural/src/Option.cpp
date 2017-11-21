@@ -10,7 +10,7 @@ Option::Option()
 //第一项通常是默认项
 void Option::initMaps()
 {
-    map_ActiveFunctionType_ =
+    registerEnum<ActiveFunctionType>(
     {
         { "none", ACTIVE_FUNCTION_NONE },
         { "sigmoid", ACTIVE_FUNCTION_SIGMOID },
@@ -34,10 +34,10 @@ void Option::initMaps()
         { "batch_normalization", ACTIVE_FUNCTION_BATCH_NORMALIZATION },
         { "bn", ACTIVE_FUNCTION_BATCH_NORMALIZATION },
         { "spatial_transformer", ACTIVE_FUNCTION_SPATIAL_TRANSFORMER },
-    };
-    dealStringForMap(map_ActiveFunctionType_);
+    });
 
-    map_LayerConnectionType_ =
+
+    registerEnum<LayerConnectionType>(
     {
         { "none", LAYER_CONNECTION_NONE },
         { "null", LAYER_CONNECTION_NONE },
@@ -50,99 +50,96 @@ void Option::initMaps()
         { "pool", LAYER_CONNECTION_POOLING },
         { "direct", LAYER_CONNECTION_DIRECT },
         { "combine", LAYER_CONNECTION_COMBINE },
-    };
+    });
 
-    map_CostFunctionType_ =
+    registerEnum<CostFunctionType>(
     {
         { "rmse", COST_FUNCTION_RMSE },
         { "crossentropy", COST_FUNCTION_CROSS_ENTROPY },
-    };
+    });
 
-    map_PoolingType_ =
+    registerEnum<PoolingType>(
     {
         { "max", POOLING_MAX },
         { "average", POOLING_AVERAGE_NOPADDING },
         { "average_no_padding", POOLING_AVERAGE_NOPADDING },
         { "average_padding", POOLING_AVERAGE_PADDING },
-    };
-    dealStringForMap(map_PoolingType_);
+    });
 
-    map_CombineType_ =
+    registerEnum<CombineType>(
     {
         { "concat", COMBINE_CONCAT },
         { "add", COMBINE_ADD },
-    };
+    });
 
-    map_RandomFillType_ =
+    registerEnum<RandomFillType>(
     {
         { "constant", RANDOM_FILL_CONSTANT },
         { "xavier", RANDOM_FILL_XAVIER },
         { "gaussian", RANDOM_FILL_GAUSSIAN },
         { "msra", RANDOM_FILL_GAUSSIAN },
-    };
+    });
 
-    map_AdjustLearnRateType_ =
+    registerEnum<AdjustLearnRateType>(
     {
         { "fixed", ADJUST_LEARN_RATE_FIXED },
         { "inv", ADJUST_LEARN_RATE_INV },
         { "step", ADJUST_LEARN_RATE_STEP },
-    };
+    });
 
-    map_BatchNormalizationType_ =
+    registerEnum<BatchNormalizationType>(
     {
         { "per_active", BATCH_NORMALIZATION_PER_ACTIVATION },
         { "spatial", BATCH_NORMALIZATION_SPATIAL },
         { "auto", BATCH_NORMALIZATION_AUTO },
-    };
-    dealStringForMap(map_BatchNormalizationType_);
+    });
 
-    map_RecurrentType_ =
+    registerEnum<RecurrentType>(
     {
         { "relu", RECURRENT_RELU },
         { "tanh", RECURRENT_TANH },
         { "lstm", RECURRENT_LSTM },
         { "gru", RECURRENT_GRU },
-    };
+    });
 
-    map_RecurrentDirectionType_ =
+    registerEnum<RecurrentDirectionType>(
     {
         { "uni", RECURRENT_DIRECTION_UNI },
         { "bi", RECURRENT_DIRECTION_BI },
-    };
+    });
 
-    map_RecurrentInputType_ =
+    registerEnum<RecurrentInputType>(
     {
         { "linear", RECURRENT_INPUT_LINEAR },
         { "skip", RECURRENT_INPUT_SKIP },
-    };
+    });
 
-    map_RecurrentAlgoType_ =
+    registerEnum<RecurrentAlgoType>(
     {
         { "standard", RECURRENT_ALGO_STANDARD },
         { "static", RECURRENT_ALGO_PERSIST_STATIC, },
         { "dynamic", RECURRENT_ALGO_PERSIST_DYNAMIC, },
-    };
+    });
 
-    map_SolverType_ =
+    registerEnum<SolverType>(
     {
         { "sgd", SOLVER_SGD },
         { "nag", SOLVER_NAG },
         { "ada_delta", SOLVER_ADA_DELTA },
-    };
-    dealStringForMap(map_SolverType_);
+    });
 
-    map_WorkModeType_ =
+    registerEnum<WorkModeType>(
     {
         { "normal", WORK_MODE_NORMAL },
         { "gan", WORK_MODE_GAN },
         { "prune", WORK_MODE_PRUNE },
-    };
+    });
 
-    map_PruneType_ =
+    registerEnum<PruneType>(
     {
         { "active", PRUNE_ACTIVE },
         { "weight", PRUNE_WEIGHT },
-    };
+    });
 }
 
 void Option::loadIniFile(const std::string& filename)

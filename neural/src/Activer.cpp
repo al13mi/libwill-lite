@@ -12,7 +12,7 @@ Activer::~Activer()
 
 void Activer::init(Option* op, std::string section, LayerConnectionType ct)
 {
-    active_function_ = op->getActiveFunctionTypeFromSection(section, "active", "none");
+    active_function_ = op->getEnumFromSection(section, "active", ACTIVE_FUNCTION_NONE);
     real learn_rate_base = op->getRealFromSection2(section, "learn_rate_base", 1e-2);
 }
 

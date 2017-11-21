@@ -34,7 +34,7 @@ void Solver::init(Option* op, std::string section, int row, int batch, Matrix* W
     }
 
     //学习率调整方案相关参数
-    lr_adjust_method_ = op->getAdjustLearnRateType("lr_adjust_method", "fixed");
+    lr_adjust_method_ = op->getEnumFromSection2(section, "lr_adjust_method", ADJUST_LEARN_RATE_FIXED);
     lr_gamma_ = op->getRealFromSection2(section, "lr_gamma", 1e-4);
     lr_power_ = op->getRealFromSection2(section, "lr_power", 0.75);
     lr_weight_scale_ = op->getRealFromSection2(section, "lr_weight_scale", 1);
@@ -43,8 +43,7 @@ void Solver::init(Option* op, std::string section, int row, int batch, Matrix* W
     convert::findNumbers(op->getStringFromSection2(section, "lr_step_rate", "1"), &lr_step_rate_);
 
     //求解器设定
-    auto solver_string = op->getStringFromSection2(section, "solver", "sgd");
-    solver_ = op->getSolverType(solver_string);
+    solver_ = op->getEnumFromSection2(section, "solver", SOLVER_SGD);
     switch (solver_)
     {
     case SOLVER_SGD:

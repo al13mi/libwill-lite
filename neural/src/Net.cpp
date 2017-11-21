@@ -134,7 +134,7 @@ int Net::createAndConnectLayers()
         if (section.find_first_of("layer") == 0)
         {
             LOG("Found layer %s\n", section.c_str());
-            auto ct = option_->getLayerConnectionTypeFromSection(section, "type", "none");
+            auto ct = option_->getEnumFromSection(section, "type", LAYER_CONNECTION_NONE);
             auto l = LayerCreator::createByConnectionType(ct);
             l->setOption(option_);
             l->setName(section);

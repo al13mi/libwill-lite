@@ -41,7 +41,7 @@ void LayerConvolution::init2()
 
     int in_pamameter = prev_layer_->getOutChannel() * window_width_ * window_height_;
     int out_parameter = out_channel_ * window_width_ * window_height_;
-    auto fill_type = option_->getRandomFillTypeFromSection(layer_name_, "weight_fill", "xavier");
+    auto fill_type = option_->getEnumFromSection(layer_name_, "weight_fill", RANDOM_FILL_XAVIER);
     MatrixFiller::fill(W_, fill_type, in_pamameter, out_parameter);
 
     if (!use_simple_weight_)

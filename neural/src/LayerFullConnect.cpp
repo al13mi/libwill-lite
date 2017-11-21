@@ -45,7 +45,7 @@ void LayerFullConnect::init2()
     //weight矩阵，对于全连接层，行数是本层的节点数，列数是上一层的节点数
     W_ = new Matrix(out_total_, prev_layer_->getOutTotal());
 
-    auto fill_type = option_->getRandomFillTypeFromSection(layer_name_, "weight_fill", "xavier");
+    auto fill_type = option_->getEnumFromSection(layer_name_, "weight_fill", RANDOM_FILL_XAVIER);
     MatrixFiller::fill(W_, fill_type, prev_layer_->getOutTotal(), out_total_);
 
     dW_ = new Matrix(W_);
