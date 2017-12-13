@@ -41,3 +41,4 @@ neural/work/*py*
 neural/work/ttt*
 neural/work/ttt-cv/
 neural/x64/*
+*.suo
