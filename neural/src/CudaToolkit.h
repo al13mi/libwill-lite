@@ -76,11 +76,15 @@ public:
 
     //设置张量数据，用于简化代码
     static void setTensorDesc(cudnnTensorDescriptor_t tensor, int w, int h, int c, int n)
-    { if (tensor) { cudnnSetTensor4dDescriptor(tensor, CUDNN_TENSOR_NCHW, MYCUDNN_DATA_REAL, n, c, h, w); } }
+    {
+        if (tensor) { cudnnSetTensor4dDescriptor(tensor, CUDNN_TENSOR_NCHW, MYCUDNN_DATA_REAL, n, c, h, w); }
+    }
 
     //设置激活函数，用于简化代码
     static void setActivationDesc(cudnnActivationDescriptor_t activation, cudnnActivationMode_t mode, real v)
-    { if (activation) { cudnnSetActivationDescriptor(activation, mode, CUDNN_NOT_PROPAGATE_NAN, v); } }
+    {
+        if (activation) { cudnnSetActivationDescriptor(activation, mode, CUDNN_NOT_PROPAGATE_NAN, v); }
+    }
 
 private:
     //copy and modify from helper_cuda.h
@@ -90,11 +94,9 @@ public:
     //重载cudnn中Descriptor名字相似的一大堆函数方便使用，避免问题不使用模板
 #ifndef _NO_CUDA
 #define CUDNN_CERATE_DESCRIPTOR(type) \
-    inline static cudnnStatus_t cudnnCreateDescriptor(cudnn##type##Descriptor_t* t) \
-    { return cudnnCreate##type##Descriptor(t); }
+    inline static cudnnStatus_t cudnnCreateDescriptor(cudnn##type##Descriptor_t* t) { return cudnnCreate##type##Descriptor(t); }
 #define CUDNN_DESTROY_DESCRIPTOR(type) \
-    inline static cudnnStatus_t cudnnDestroyDescriptor(cudnn##type##Descriptor_t t) \
-    { auto r = CUDNN_STATUS_EXECUTION_FAILED; if (t) { r=cudnnDestroy##type##Descriptor(t); t=nullptr; } return r; }
+    inline static cudnnStatus_t cudnnDestroyDescriptor(cudnn##type##Descriptor_t t) { auto r = CUDNN_STATUS_EXECUTION_FAILED; if (t) { r=cudnnDestroy##type##Descriptor(t); t=nullptr; } return r; }
 #define CUDNN_DESCRIPTOR_PAIR(type) \
     CUDNN_CERATE_DESCRIPTOR(type) CUDNN_DESTROY_DESCRIPTOR(type)
 

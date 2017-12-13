@@ -10,11 +10,9 @@ private:
     ~VectorMath() {}
 public:
 #define VECTOR(fv, f) template<typename T> \
-    static void fv(const T* x, T* a, int size) \
-    { for(int i=0;i<size;i++){a[i]=f(x[i]);} }
+    static void fv(const T* x, T* a, int size) { for(int i=0;i<size;i++){a[i]=f(x[i]);} }
 #define VECTOR_B(fv, content) template<typename T> \
-    static void fv(const T* a, const T* da, const T* x, T* dx, int size) \
-    { for(int i=0;i<size;i++){dx[i]=(content);} }
+    static void fv(const T* a, const T* da, const T* x, T* dx, int size) { for(int i=0;i<size;i++){dx[i]=(content);} }
 
     template<typename T> static inline T sigmoid(T x) { return 1 / (1 + exp(-x)); }
     template<typename T> static inline T softplus(T x) { return log(1 + exp(x)); }
@@ -92,9 +90,9 @@ public:
     {
         T sum = 0;
         for (int i = 0; i < size; i++)
-        { 
-			sum += x[i]; 
-		}
+        {
+            sum += x[i];
+        }
         return sum;
     }
 
