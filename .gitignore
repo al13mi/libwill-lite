@@ -29,8 +29,6 @@
 */work/openblas_haswell_lib/
 *ubyte
 neural/.vs/
-neural/lib/include/opencv/
-neural/lib/include/opencv2/
 neural/lib/x64/*
 neural/python/will_wrap.cxx
 neural/python/will.py
