@@ -9,19 +9,19 @@
 //这个方法不知道好不好
 #define Cublas Cblas
 
-#define cudaMalloc
-#define cudaFree
-#define cudaMemcpy
+#define cudaMalloc (0)
+#define cudaFree (0)
+#define cudaMemcpy (0)
 
-#define cuda_addnumber
-#define cuda_reciprocal
+#define cuda_addnumber (0)
+#define cuda_reciprocal (0)
 
 #define curandGenerator_t int*
-#define curandCreateGenerator
-#define curandDestroyGenerator
-#define curandSetPseudoRandomGeneratorSeed
-#define curandGenerateUniform
-#define curandGenerateUniformDouble
+#define curandCreateGenerator (0)
+#define curandDestroyGenerator (0)
+#define curandSetPseudoRandomGeneratorSeed (0)
+#define curandGenerateUniform (0)
+#define curandGenerateUniformDouble (0)
 
 #define cudnnHandle_t int*
 #define cudnnStatus_t int
@@ -31,37 +31,41 @@
 #define cudnnConvolutionDescriptor_t int*
 #define cudnnFilterDescriptor_t int*
 
-#define cudnnSetTensor4dDescriptor
-#define cudnnSetPooling2dDescriptor
-#define cudnnSetTensor
+#define cudnnSetTensor4dDescriptor (0)
+#define cudnnSetPooling2dDescriptor (0)
+#define cudnnSetTensor (0)
 
-#define cudnnGetTensor4dDescriptor
-#define cudnnSetConvolution2dDescriptor
-#define cudnnSetFilter4dDescriptor
-#define cudnnConvolutionForward
-#define cudnnConvolutionBackwardData
-#define cudnnConvolutionBackwardFilter
-#define cudnnConvolutionBackwardBias
+#define cudnnGetTensor4dDescriptor (0)
+#define cudnnSetConvolution2dDescriptor (0)
+#define cudnnSetFilter4dDescriptor (0)
+#define cudnnConvolutionForward (0)
+#define cudnnConvolutionBackwardData (0)
+#define cudnnConvolutionBackwardFilter (0)
+#define cudnnConvolutionBackwardBias (0)
 
-#define cudnnPoolingForward
-#define cudnnPoolingBackward
+#define cudnnPoolingForward (0)
+#define cudnnPoolingBackward (0)
 
-#define cudnnSoftmaxForward
-#define cudnnSoftmaxBackward
+#define cudnnSoftmaxForward (0)
+#define cudnnSoftmaxBackward (0)
 
 #define cudnnActivationDescriptor_t int*
 #define cudnnOpTensorDescriptor_t int*
 
-#define cudnnCreatetOpTensorDescriptor
-#define cudnnDestroytOpTensorDescriptor
-#define cudnnSetOpTensorDescriptor
-#define cudnnOpTensor
+#define cudnnCreatetOpTensorDescriptor (0)
+#define cudnnDestroytOpTensorDescriptor (0)
+#define cudnnSetOpTensorDescriptor (0)
+#define cudnnOpTensor (0)
 
-#define cudnnCreateActivationDescriptor
-#define cudnnDestroyActivationDescriptor
-#define cudnnSetActivationDescriptor
-#define cudnnActivationForward
-#define cudnnActivationBackward
+#define cudnnCreateActivationDescriptor (0)
+#define cudnnDestroyActivationDescriptor (0)
+#define cudnnSetActivationDescriptor (0)
+#define cudnnActivationForward (0)
+#define cudnnActivationBackward (0)
+
+#define cudnnCreate (0)
+#define cudnnDestroy (0)
+#define cudnnAddTensor (0)
 
 #endif
 
@@ -72,37 +76,39 @@
 #define cudnnSpatialTransformerDescriptor_t int*
 #define cudnnLRNDescriptor_t int*
 
-#define cudnnFindConvolutionForwardAlgorithm
-#define cudnnFindConvolutionBackwardDataAlgorithm
-#define cudnnFindConvolutionBackwardFilterAlgorithm
 
-#define cudnnSetDropoutDescriptor
-#define cudnnDropoutForward
-#define cudnnDropoutBackward
-#define cudnnDropoutGetStatesSize
-#define cudnnDropoutGetReserveSpaceSize
 
-#define cudnnDivisiveNormalizationForward
-#define cudnnDivisiveNormalizationBackward
+#define cudnnFindConvolutionForwardAlgorithm (0)
+#define cudnnFindConvolutionBackwardDataAlgorithm (0)
+#define cudnnFindConvolutionBackwardFilterAlgorithm (0)
 
-#define cudnnBatchNormalizationForwardInference
-#define cudnnBatchNormalizationForwardTraining
-#define cudnnBatchNormalizationBackward
-#define cudnnDeriveBNTensorDescriptor
+#define cudnnSetDropoutDescriptor (0)
+#define cudnnDropoutForward (0)
+#define cudnnDropoutBackward (0)
+#define cudnnDropoutGetStatesSize (0)
+#define cudnnDropoutGetReserveSpaceSize (0)
 
-#define cudnnSetLRNDescriptor
-#define cudnnLRNCrossChannelForward
-#define cudnnLRNCrossChannelBackward
+#define cudnnDivisiveNormalizationForward (0)
+#define cudnnDivisiveNormalizationBackward (0)
 
-#define cudnnSetSpatialTransformerNdDescriptor
-#define cudnnSpatialTfGridGeneratorForward
-#define cudnnSpatialTfSamplerForward
-#define cudnnSpatialTfSamplerBackward
-#define cudnnSpatialTfGridGeneratorBackward
+#define cudnnBatchNormalizationForwardInference (0)
+#define cudnnBatchNormalizationForwardTraining (0)
+#define cudnnBatchNormalizationBackward (0)
+#define cudnnDeriveBNTensorDescriptor (0)
 
-#define cudnnRNNForwardInference
-#define cudnnRNNBackwardData
-#define cudnnRNNBackwardWeights
+#define cudnnSetLRNDescriptor (0)
+#define cudnnLRNCrossChannelForward (0)
+#define cudnnLRNCrossChannelBackward (0)
+
+#define cudnnSetSpatialTransformerNdDescriptor (0)
+#define cudnnSpatialTfGridGeneratorForward (0)
+#define cudnnSpatialTfSamplerForward (0)
+#define cudnnSpatialTfSamplerBackward (0)
+#define cudnnSpatialTfGridGeneratorBackward (0)
+
+#define cudnnRNNForwardInference (0)
+#define cudnnRNNBackwardData (0)
+#define cudnnRNNBackwardWeights (0)
 
 #endif
 

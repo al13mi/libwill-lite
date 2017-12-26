@@ -20,12 +20,27 @@ typedef double real;
     add new macros if needed.
 */
 
+#ifdef _NO_CUDA
+#define CUDA_FUNCTION22H(name)
+#define CUDA_FUNCTION32H(name)
+#define CUDA_FUNCTION42H(name)
+
+#define cuda_reciprocal (0)
+#define cuda_addnumber (0)
+#define cuda_pow (0)
+#define cuda_sparse (0)
+#define cuda_sign (0)
+#define cuda_add (0)
+#define cuda_mul (0)
+#define cuda_div (0)
+#define cuda_sectionlimit (0)
+#define cuda_ada_update (0)
+#define cuda_adaDelta_update (0)
+#else
 #define CUDA_FUNCTION22H(name)\
     int name(real* p1, real* p2, unsigned int size, real a1, real a2)
-
 #define CUDA_FUNCTION32H(name)\
     int name(real* p1, real* p2, real* p3, unsigned int size, real a1, real a2)
-
 #define CUDA_FUNCTION42H(name)\
     int name(real* p1, real* p2, real* p3, real* p4, unsigned int size, real a1, real a2)
 
@@ -41,6 +56,9 @@ CUDA_FUNCTION32H(cuda_div);
 CUDA_FUNCTION32H(cuda_sectionlimit);
 CUDA_FUNCTION32H(cuda_ada_update);
 CUDA_FUNCTION42H(cuda_adaDelta_update);
+#endif
+
+
 
 #undef CUDA_FUNCTION22H
 #undef CUDA_FUNCTION32H

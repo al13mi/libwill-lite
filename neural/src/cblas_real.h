@@ -31,6 +31,8 @@ private:
         return t == MATRIX_LEFT ? CblasLeft : CblasRight;
     }
 public:
+    int init() { return 0; }
+    int destroy() { return 0; }
     BLAS_FUNC float dot(const int N, const float* X, const int incX, const float* Y, const int incY)
     {
         return cblas_sdot(N, X, incX, Y, incY);
