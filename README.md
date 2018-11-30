@@ -43,7 +43,7 @@ Any questions, please contact with sty@prevt.com or scarsty@gmail.com.
 
 - 请自行解决CUDA和OpenCV的问题，尽量使用高版本。如果自动安装的版本较低，可以删除src/CMakeLists.txt中的链接选项opencv_imgcodecs。
 - 下载cudnn，放到/usr/local/cuda，注意lib的目录有可能含有64。
-- 注意cuda的默认安装文件夹应该是/usr/local/cuda，但是一些linux发型版可能会安装至其他目录，这时需要修改CMakeLists.txt中的包含目录和链接目录。其中包含有stubs的是nvidia-ml的目录，通常不包含在默认的库目录中，可能需要自行修改。
+- 注意cuda的默认安装文件夹应该是/usr/local/cuda，但是一些linux发行版可能会安装至其他目录，这时需要修改CMakeLists.txt中的包含目录和链接目录。其中包含有stubs的是nvidia-ml的目录，通常不包含在默认的库目录中，可能需要自行修改。
 - 在neural目录下新建```cmake .```生成Makefile。
 - ```make```编译，可以加上-j加快速度。
 - 生成的可执行文件在bin文件夹。
