@@ -7,8 +7,8 @@
     <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>-c ok.ini --train</LocalDebuggerCommandArguments>
-    <LocalDebuggerWorkingDirectory>..\..\..\data\ok</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerCommandArguments>-c mnist-cv.ini --train</LocalDebuggerCommandArguments>
+    <LocalDebuggerWorkingDirectory>.\work</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

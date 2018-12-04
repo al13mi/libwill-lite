@@ -2,7 +2,7 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #define __CUDA_INTERNAL_COMPILATION__
-#include "math_functions.hpp"
+//#include "math_functions.hpp"
 #undef __CUDA_INTERNAL_COMPILATION__
 #include <stdio.h>
 #include "will_cuda.h"
