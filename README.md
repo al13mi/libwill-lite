@@ -16,12 +16,21 @@ Any questions, please contact with sty@prevt.com or scarsty@gmail.com.
 ### Windows下编译
 
 - 安装Visual Studio 2017（v141），CUDA 9.2（其实简单修改后可以使用10.0）。注意工程实际上是使用v140，故请自行决定是否安装VS2017的v140开发库，或者也可以手动升级整个工程。
+
 - 下载cudnn的开发包，将h文件，lib文件和dll文件复制到CUDA工具箱目录中的include，lib/x64和bin目录。或者复制到自己指定的某个目录也可以，但是可能需要自己设置环境变量。
+
 - 请检查环境变量CUDA_PATH的值，通常应该是“C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2”。
+
 - 依赖libopenblas，可以使用msys2安装，或vcpkg。
+
 - 需要nvml库和nvml.dll，请使用显卡驱动中自带的，通常dll文件位于“C:\Program Files\NVIDIA Corporation\NVSMI”，该目录一般不在环境变量中，请自行设置或将dll文件复制出来。
+
 - 下载MNIST的文件放入work/mnist目录，文件名为：t10k-images.idx3-ubyte，t10k-labels.idx1-ubyte，train-images.idx3-ubyte，train-labels.idx1-ubyte。某些解压软件可能解压后中间的.会变成-，请自行修改。
-- 编译windows工程，执行```will-windows -c mnist-cv.ini --train```测试效果，正常情况下准确率应在99%以上。
+
+- 编译windows工程，在work目录下执行以下命令测试效果，正常情况下测试集的准确率应在99%以上。直接使用VS的调试功能也可以。
+```shell
+will-windows -c mnist-cv.ini
+```
 - 你也可以使用FashionMNIST来测试，通过mnist_path选项可以设置不同的文件所在目录。通常测试集上准确率可以到91%左右。
 
 ### Linux下编译
@@ -50,9 +59,10 @@ make
 
 - 推荐使用基于pascal架构的TX2。
 
-## 完整版与lite版的区别
+## 完整版与简化版的区别
 
-- 完整版可以进行多维数据的推导与训练，而lite版仅能进行二维数据（即图片，但可以包含多通道）的推导与训练。
+- 完整版可以进行多维数据的推导与训练，而简化版仅能进行二维数据（即图片，但可以包含多通道）的推导与训练。
+- 完整版包含更多激活函数和层种类。
 - 完整版包含一个仅用于推导的接口，方便部署训练好的网络。
 - 完整版包含Python接口。
 - 完整版包含基于OpenCV的格式转换功能，但是该功能实际上用处并不大。

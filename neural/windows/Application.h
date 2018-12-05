@@ -4,20 +4,21 @@
 class Application
 {
 public:
-    Application() {}
-    Application(const std::string& ini);
+    Application();
     virtual ~Application();
 
     void start();
     void stop();
-    void test();
+
 private:
     bool loop_ = true;
-    std::string ini_file_;
-
     void callback(void*);
+    std::string ini_file_;
+    std::string ini_string_;
 public:
     void run();
     void mainLoop();
-};
 
+    void setIniFile(std::string ini) { ini_file_ = ini; }
+    void setIniString(std::string ini) { ini_string_ = ini; }
+};
