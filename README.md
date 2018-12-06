@@ -15,11 +15,11 @@ Any questions, please contact with sty@prevt.com or scarsty@gmail.com.
 
 ### Windows下编译
 
-- 安装Visual Studio 2017（v141），CUDA 9.2（其实简单修改后可以使用10.0）。注意工程实际上是使用v140，故请自行决定是否安装VS2017的v140开发库，或者也可以手动升级整个工程。
+- 安装Visual Studio 2017（v141），CUDA 10.0。注意工程实际上是使用v140，故请自行决定是否安装VS2017的v140开发库，或者也可以手动升级整个工程。
 
 - 下载cudnn的开发包，将h文件，lib文件和dll文件复制到CUDA工具箱目录中的include，lib/x64和bin目录。或者复制到自己指定的某个目录也可以，但是可能需要自己设置环境变量。
 
-- 请检查环境变量CUDA_PATH的值，通常应该是“C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2”。
+- 请检查环境变量CUDA_PATH的值，通常应该是“C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0”。
 
 - 依赖libopenblas，可以使用msys2安装，或vcpkg。
 
