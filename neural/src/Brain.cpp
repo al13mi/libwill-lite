@@ -33,7 +33,7 @@ int Brain::init(const std::string& ini_file)
 
     //gpu测试
     int device_count = 0;
-    if (option_->getInt("use_cuda", 1))
+    if (option_->getInt("", "use_cuda", 1))
     {
         device_count = CudaToolkit::checkDevices();
         if (device_count > 0)
@@ -50,7 +50,7 @@ int Brain::init(const std::string& ini_file)
         }
     }
 
-    if (option_->getInt("use_cuda") != 0 && CudaToolkit::getCudaState() != CUDA_GPU)
+    if (option_->getInt("", "use_cuda") != 0 && CudaToolkit::getCudaState() != CUDA_GPU)
     {
         LOG("CUDA state is not right, refuse to run!\n");
         LOG("Re-init the net again, or consider CPU mode (slow).\n");
@@ -58,11 +58,11 @@ int Brain::init(const std::string& ini_file)
     }
 
 
-    MP_count_ = std::min(device_count, option_->getInt("mp", 1));
+    MP_count_ = std::min(device_count, option_->getInt("", "mp", 1));
     if (MP_count_ <= 0) { MP_count_ = 1; }
-    batch_ = std::max(1, option_->getInt("batch", 100));
+    batch_ = std::max(1, option_->getInt("", "batch", 100));
 
-    work_mode_ = option_->getEnum("work_mode", WORK_MODE_NORMAL);
+    work_mode_ = option_->getEnum("", "work_mode", WORK_MODE_NORMAL);
 
     initNets();
     initDataPreparer();
@@ -76,7 +76,7 @@ void Brain::initNets()
     nets_.resize(MP_count_);
     //这里读取ini中指定的device顺序，其中第一个设备为主网络，该值一般来说应由用户指定
     std::vector<int> mp_device(MP_count_);
-    convert::findNumbers(option_->getString("mp_device"), &mp_device);
+    convert::findNumbers(option_->getString("", "mp_device"), &mp_device);
     //如果用户指定的不正确，则以best_device的顺序决定
     auto check_repeat = [](std::vector<int> v)
     {
@@ -138,7 +138,7 @@ void Brain::initDataPreparer()
 void Brain::initData()
 {
     //训练数据使用的显存量，不能写得太小
-    double size_gpu = option_->getReal("cuda_max_train_space", 1e9);
+    double size_gpu = option_->getReal("", "cuda_max_train_space", 1e9);
     //计算显存可以放多少组数据，为了方便计算，要求是minibatch的整数倍，且可整除原始数据组数
 
     if (train_data_origin_.X())
@@ -153,7 +153,7 @@ void Brain::initData()
 
     //生成测试集，注意这里测试准备器所占用的内存会被释放，测试集通常只生成一次即可
     std::string test_section = "data_preparer_test";
-    if (option_->getInt("test_test"))
+    if (option_->getInt("", "test_test"))
     {
         /*if (!option_->hasSection(test_section))
         {
@@ -182,26 +182,26 @@ void Brain::run(int train_epoches /*= -1*/)
 {
     auto net = nets_[0];
     //初测
-    testOrigin(net, option_->getInt("force_output"), option_->getInt("test_max"));
+    testOrigin(net, option_->getInt("", "force_output"), option_->getInt("", "test_max"));
 
     if (train_epoches < 0)
     {
-        train_epoches = option_->getInt("train_epoches", 20);
+        train_epoches = option_->getInt("", "train_epoches", 20);
     }
     LOG("Running for %d epoches...\n", train_epoches);
 
-    train(nets_, data_preparer_, train_epoches, option_->getInt("test_epoch", 1));
+    train(nets_, data_preparer_, train_epoches, option_->getInt("", "test_epoch", 1));
 
-    std::string save_filename = option_->getString("SaveFile");
+    std::string save_filename = option_->getString("", "SaveFile");
     if (save_filename != "")
     {
         net->save(save_filename);
     }
 
     //终测
-    testOrigin(net, option_->getInt("force_output"), option_->getInt("test_max"));
+    testOrigin(net, option_->getInt("", "force_output"), option_->getInt("", "test_max"));
     //附加测试，有多少个都能用
-    extraTest(net, option_->getString("extra_test_data_file"), option_->getInt("force_output"), option_->getInt("test_max"));
+    extraTest(net, option_->getString("", "extra_test_data_file"), option_->getInt("", "force_output"), option_->getInt("", "test_max"));
 
     LOG("Run neural net end. Elapsed time is %g s.\n", timer_total_.getElapsedTime());
     LOG("%s\n", Timer::getNowAsString().c_str());
@@ -276,15 +276,15 @@ void Brain::trainOneNet(std::vector<Net*> nets, int net_id, TrainInfo* train_inf
     DataGroup test_data_gpu;
     if (net_id == 0) { test_data_gpu.cloneFrom(test_data_cpu_); }
 
-    int test_train = option_->getInt("test_train", 0);
-    int test_train_origin = option_->getInt("test_train_origin", 0);
-    int pre_test_train = option_->getInt("pre_test_train", 0);
-    int test_test = option_->getInt("test_test", 0);
-    int test_epoch = option_->getInt("test_epoch", 1);
-    int save_epoch = option_->getInt("save_epoch", 10);
-    int out_iter = option_->getInt("out_iter", 100);
-    int test_max = option_->getInt("test_max", 0);
-    std::string save_format = option_->getString("save_format", "save/save%d.txt");
+    int test_train = option_->getInt("", "test_train", 0);
+    int test_train_origin = option_->getInt("", "test_train_origin", 0);
+    int pre_test_train = option_->getInt("", "pre_test_train", 0);
+    int test_test = option_->getInt("", "test_test", 0);
+    int test_epoch = option_->getInt("", "test_epoch", 1);
+    int save_epoch = option_->getInt("", "save_epoch", 10);
+    int out_iter = option_->getInt("", "out_iter", 100);
+    int test_max = option_->getInt("", "test_max", 0);
+    std::string save_format = option_->getString("", "save_format", "save/save%d.txt");
 
     real max_test_accuracy = 0;
     int max_test_accuracy_epoch = 0;
@@ -405,11 +405,11 @@ void Brain::trainOneNet(std::vector<Net*> nets, int net_id, TrainInfo* train_inf
 void Brain::testOrigin(Net* net, int force_output /*= 0*/, int test_max /*= 0*/)
 {
     if (net == nullptr) { net = nets_[0]; }
-    if (option_->getInt("test_train") != 0)
+    if (option_->getInt("", "test_train") != 0)
     {
         train_accuracy_ = net->test("Test on original train set", train_data_origin_, force_output, test_max);
     }
-    if (option_->getInt("test_test") != 0 && test_data_cpu_.X())
+    if (option_->getInt("", "test_test") != 0 && test_data_cpu_.X())
     {
         test_accuracy_ = net->test("Test on original test set", test_data_origin_, force_output, test_max);
     }

@@ -18,9 +18,9 @@ DataPreparer::~DataPreparer()
 void DataPreparer::init()
 {
     //如果需要实时生成训练集，则可能要重定
-    trans_ = option_->getIntFromSection(section_, "trans", 0);
-    fill_ = option_->getIntFromSection(section_, "fill", 0);
-    aem_ = option_->getInt("aem", 0);
+    trans_ = option_->getInt(section_, "trans", 0);
+    fill_ = option_->getInt(section_, "fill", 0);
+    aem_ = option_->getInt("", "aem", 0);
 
     init2();
 }
@@ -30,7 +30,7 @@ int DataPreparer::getTrainDataForceGroup()
 {
     if (fill_)
     {
-        return option_->getIntFromSection(section_, "force_group", -1);
+        return option_->getInt(section_, "force_group", -1);
     }
     return -1;
 }
@@ -149,7 +149,7 @@ void DataPreparer::prepareData(int epoch, DataGroup& origin, DataGroup& data)
         LOG("Data prepared for epoch %d\n", ep1);
     }
 
-    if (option_->getIntFromSection(section_, "save_checkpoint_data", 0))
+    if (option_->getInt(section_, "save_checkpoint_data", 0))
     {
         auto fln = "check_point_" + std::to_string(epoch) + "_X.bin";
         auto fln1 = "check_point_" + std::to_string(epoch) + "_Y.bin";
@@ -172,18 +172,18 @@ void DataPreparer::prepareData(int epoch, DataGroup& origin, DataGroup& data)
 void DataPreparer::read(DataGroup& train, DataGroup& test)
 {
 
-    if (option_->getInt("use_mnist", 0) == 0)
+    if (option_->getInt("", "use_mnist", 0) == 0)
     {
-        int data_in_txt = option_->getInt("data_in_txt", 0);
+        int data_in_txt = option_->getInt("", "data_in_txt", 0);
         if (data_in_txt)
         {
-            readTxt(option_->getString("TrainDataFile").c_str(), train);
-            readTxt(option_->getString("TestDataFile").c_str(), test);
+            readTxt(option_->getString("", "TrainDataFile").c_str(), train);
+            readTxt(option_->getString("", "TestDataFile").c_str(), test);
         }
         else
         {
-            readBin(option_->getString("TrainDataLabelFile"), option_->getString("TrainDataBinFile"), train);
-            readBin(option_->getString("TestDataLabelFile"), option_->getString("TestDataBinFile"), test);
+            readBin(option_->getString("", "TrainDataLabelFile"), option_->getString("", "TrainDataBinFile"), train);
+            readBin(option_->getString("", "TestDataLabelFile"), option_->getString("", "TestDataBinFile"), test);
         }
         if (test.Y())
         {
@@ -194,7 +194,7 @@ void DataPreparer::read(DataGroup& train, DataGroup& test)
     {
         //使用MNIST库，通常用来测试网络
         MNIST mnist;
-        std::string mnist_path = option_->getString("mnist_path", "mnist");
+        std::string mnist_path = option_->getString("", "mnist_path", "mnist");
         mnist.load(train, test, mnist_path);
     }
 

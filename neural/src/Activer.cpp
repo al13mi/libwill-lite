@@ -12,8 +12,8 @@ Activer::~Activer()
 
 void Activer::init(Option* op, std::string section, LayerConnectionType ct)
 {
-    active_function_ = op->getEnumFromSection(section, "active", ACTIVE_FUNCTION_NONE);
-    real learn_rate_base = op->getRealFromSection2(section, "learn_rate_base", 1e-2);
+    active_function_ = op->getEnum(section, "active", ACTIVE_FUNCTION_NONE);
+    real learn_rate_base = op->getReal2(section, "learn_rate_base", 1e-2);
 }
 
 //激活前的准备工作，主要用于一些激活函数在训练和测试时有不同设置

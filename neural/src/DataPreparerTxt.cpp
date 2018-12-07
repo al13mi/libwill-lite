@@ -13,7 +13,7 @@ void DataPreparerTxt::init2()
 {
     input_ = w0_ * h0_ * c0_;
     output_ = w1_ * h1_ * c1_;
-    std::string filename = option_->getStringFromSection(section_, "file", "file.txt");
+    std::string filename = option_->getString(section_, "file", "file.txt");
     content_ = convert::readStringFromFile(filename);
 }
 

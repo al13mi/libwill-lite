@@ -17,7 +17,7 @@ LayerFullConnect::~LayerFullConnect()
 void LayerFullConnect::init2()
 {
     //可以用参考层来设置本层的尺寸
-    auto layer_ref = dynamic_cast<Net*>(net_)->getLayerByName(option_->getStringFromSection(layer_name_, "reference"));
+    auto layer_ref = dynamic_cast<Net*>(net_)->getLayerByName(option_->getString(layer_name_, "reference"));
     if (layer_ref)
     {
         out_width_ = layer_ref->getOutWidth();
@@ -26,15 +26,15 @@ void LayerFullConnect::init2()
     }
     else
     {
-        out_width_ = option_->getIntFromSection(layer_name_, "width", 0);
-        out_height_ = option_->getIntFromSection(layer_name_, "height", 0);
-        out_channel_ = option_->getIntFromSection(layer_name_, "channel", 1);
+        out_width_ = option_->getInt(layer_name_, "width", 0);
+        out_height_ = option_->getInt(layer_name_, "height", 0);
+        out_channel_ = option_->getInt(layer_name_, "channel", 1);
     }
     if (out_width_ <= 0 || out_height_ <= 0 || out_channel_ <= 0)
     {
         out_width_ = 1;
         out_height_ = 1;
-        out_channel_ = option_->getIntFromSection(layer_name_, "node", 0);
+        out_channel_ = option_->getInt(layer_name_, "node", 0);
     }
 
     out_total_ = out_width_ * out_height_ * out_channel_;
@@ -45,7 +45,7 @@ void LayerFullConnect::init2()
     //weight矩阵，对于全连接层，行数是本层的节点数，列数是上一层的节点数
     W_ = new Matrix(out_total_, prev_layer_->getOutTotal());
 
-    auto fill_type = option_->getEnumFromSection(layer_name_, "weight_fill", RANDOM_FILL_XAVIER);
+    auto fill_type = option_->getEnum(layer_name_, "weight_fill", RANDOM_FILL_XAVIER);
     MatrixFiller::fill(W_, fill_type, prev_layer_->getOutTotal(), out_total_);
 
     dW_ = new Matrix(W_);
@@ -65,10 +65,10 @@ void LayerFullConnect::init2()
     }
 
     //一般这个只使用于隐藏的第一层，如果已知某些量特别重要，则初始化的时候特意增加该量对应的权重
-    int weight_special = option_->getIntFromSection(layer_name_, "weight_special", 0);
+    int weight_special = option_->getInt(layer_name_, "weight_special", 0);
     if (weight_special > 0)
     {
-        real weight_special_zoom = option_->getRealFromSection(layer_name_, "weight_special_zoom", 1);
+        real weight_special_zoom = option_->getReal(layer_name_, "weight_special_zoom", 1);
         W_->toCPU();
         for (int i = 0; i < this->out_total_; i++)
         {

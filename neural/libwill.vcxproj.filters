@@ -46,12 +46,6 @@
     <ClCompile Include="src\others\libconvert.cpp">
       <Filter>others</Filter>
     </ClCompile>
-    <ClCompile Include="src\others\ini.cpp">
-      <Filter>others</Filter>
-    </ClCompile>
-    <ClCompile Include="src\others\INIReader.cpp">
-      <Filter>others</Filter>
-    </ClCompile>
     <ClCompile Include="src\DataPreparer.cpp">
       <Filter>data</Filter>
     </ClCompile>
@@ -148,9 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\others\libconvert.h">
-      <Filter>others</Filter>
-    </ClInclude>
-    <ClInclude Include="src\others\ini.h">
       <Filter>others</Filter>
     </ClInclude>
     <ClInclude Include="src\others\INIReader.h">

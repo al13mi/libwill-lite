@@ -15,20 +15,20 @@ void Modifier::init(Option* op, std::string section, Matrix* A)
 {
     batch_ = A->getNumber();
 
-    sparse_beta_ = op->getRealFromSection2(section, "sparse_beta", 0);
+    sparse_beta_ = op->getReal2(section, "sparse_beta", 0);
     if (sparse_beta_ != 0)
     {
-        sparse_rou_ = op->getRealFromSection2(section, "sparse_rou", 0.1);
+        sparse_rou_ = op->getReal2(section, "sparse_rou", 0.1);
         sparse_rou_hat_ = new Matrix(A);
         sparse_rou_hat_vector_ = new Matrix(A->getRow(), 1);
         as_sparse_ = new Matrix(batch_, 1);
         as_sparse_->initData(1);
     }
 
-    diverse_beta_ = op->getRealFromSection2(section, "diverse_beta", 0);
+    diverse_beta_ = op->getReal2(section, "diverse_beta", 0);
     if (diverse_beta_ != 0)
     {
-        diverse_epsilon_ = op->getRealFromSection2(section, "diverse_epsilon", 1e-8);
+        diverse_epsilon_ = op->getReal2(section, "diverse_epsilon", 1e-8);
         diverse_aver_ = new Matrix(A);
         diverse_aver2_ = new Matrix(A);
         diverse_aver3_ = new Matrix(A);

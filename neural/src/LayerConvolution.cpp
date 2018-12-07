@@ -14,17 +14,17 @@ LayerConvolution::~LayerConvolution()
 
 void LayerConvolution::init2()
 {
-    out_channel_ = option_->getIntFromSection(layer_name_, "channel", 1);
+    out_channel_ = option_->getInt(layer_name_, "channel", 1);
 
-    window_width_ = std::min(option_->getIntFromSection(layer_name_, "window_width", 1), prev_layer_->getOutWidth());
-    window_height_ = std::min(option_->getIntFromSection(layer_name_, "window_height", window_width_), prev_layer_->getOutHeight());
+    window_width_ = std::min(option_->getInt(layer_name_, "window_width", 1), prev_layer_->getOutWidth());
+    window_height_ = std::min(option_->getInt(layer_name_, "window_height", window_width_), prev_layer_->getOutHeight());
 
-    stride_width_ = option_->getIntFromSection(layer_name_, "stride_width", 1);
-    stride_height_ = option_->getIntFromSection(layer_name_, "stride_height", stride_width_);
-    padding_width_ = option_->getIntFromSection(layer_name_, "padding_width", 0);
-    padding_height_ = option_->getIntFromSection(layer_name_, "padding_height", padding_width_);
+    stride_width_ = option_->getInt(layer_name_, "stride_width", 1);
+    stride_height_ = option_->getInt(layer_name_, "stride_height", stride_width_);
+    padding_width_ = option_->getInt(layer_name_, "padding_width", 0);
+    padding_height_ = option_->getInt(layer_name_, "padding_height", padding_width_);
 
-    use_simple_weight_ = option_->getIntFromSection(layer_name_, "use_simple_weight", 0) != 0;
+    use_simple_weight_ = option_->getInt(layer_name_, "use_simple_weight", 0) != 0;
 
     out_width_ = ceil(1.0 * (prev_layer_->getOutWidth() + 2 * padding_width_ - window_width_) / stride_width_ + 1);
     out_height_ = ceil(1.0 * (prev_layer_->getOutHeight() + 2 * padding_height_ - window_height_) / stride_height_ + 1);
@@ -41,7 +41,7 @@ void LayerConvolution::init2()
 
     int in_pamameter = prev_layer_->getOutChannel() * window_width_ * window_height_;
     int out_parameter = out_channel_ * window_width_ * window_height_;
-    auto fill_type = option_->getEnumFromSection(layer_name_, "weight_fill", RANDOM_FILL_XAVIER);
+    auto fill_type = option_->getEnum(layer_name_, "weight_fill", RANDOM_FILL_XAVIER);
     MatrixFiller::fill(W_, fill_type, in_pamameter, out_parameter);
 
     if (!use_simple_weight_)
@@ -65,7 +65,7 @@ void LayerConvolution::init2()
         for (int i = 0; i < out_channel_; i++)
         {
             std::string str = convert::formatString("channel%d", i);
-            str = option_->getStringFromSection(layer_name_, str, "");
+            str = option_->getString(layer_name_, str, "");
             std::vector<real> d;
             convert::findNumbers(str, &d);
             connect_info.push_back(d);

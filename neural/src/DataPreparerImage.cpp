@@ -19,7 +19,7 @@ DataPreparerImage::~DataPreparerImage()
 
 void DataPreparerImage::init2()
 {
-    setLog(option_->getIntFromSection(section_, "output_log", 0));
+    setLog(option_->getInt(section_, "output_log", 0));
 
     LOG("Options for image processing %s:\n", section_.c_str());
 

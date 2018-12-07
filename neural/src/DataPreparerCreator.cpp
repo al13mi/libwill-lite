@@ -9,7 +9,7 @@ DataPreparer* DataPreparerCreator::create(Option* op, const std::string& section
 
     if (dp == nullptr)
     {
-        auto mode = op->getStringFromSection(section, "mode", "image");
+        auto mode = op->getString(section, "mode", "image");
 
         if (mode == "image")
         {

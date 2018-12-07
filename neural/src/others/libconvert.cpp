@@ -1,4 +1,5 @@
 #include "libconvert.h"
+#include <algorithm>
 #include <stdio.h>
 
 #ifdef _MSC_VER
@@ -11,7 +12,7 @@ std::string convert::readStringFromFile(const std::string& filename)
     FILE* fp = fopen(filename.c_str(), "rb");
     if (!fp)
     {
-        fprintf(stderr, "Can not open file %s\n", filename.c_str());
+        fprintf(stderr, "Cannot open file %s!\n", filename.c_str());
         return "";
     }
     fseek(fp, 0, SEEK_END);
@@ -24,12 +25,21 @@ std::string convert::readStringFromFile(const std::string& filename)
     return str;
 }
 
-void convert::writeStringToFile(const std::string& str, const std::string& filename)
+int convert::writeStringToFile(const std::string& str, const std::string& filename)
 {
     FILE* fp = fopen(filename.c_str(), "wb");
-    int length = str.length();
-    fwrite(str.c_str(), length, 1, fp);
-    fclose(fp);
+    if (fp)
+    {
+        int length = str.length();
+        fwrite(str.c_str(), length, 1, fp);
+        fclose(fp);
+        return length;
+    }
+    else
+    {
+        fprintf(stderr, "Cannot write file %s!\n", filename.c_str());
+        return -1;
+    }
 }
 
 void convert::writeStringAppendToFile(const std::string& str, FILE* fp)
@@ -39,7 +49,7 @@ void convert::writeStringAppendToFile(const std::string& str, FILE* fp)
     fputc('\n', fp);
 }
 
-int convert::replaceString(std::string& s, const std::string& oldstring, const std::string& newstring, int pos0/*=0*/)
+std::string convert::replaceString(std::string& s, const std::string& oldstring, const std::string& newstring, int pos0 /*=0*/)
 {
     int pos = s.find(oldstring, pos0);
     if (pos >= 0)
@@ -47,10 +57,10 @@ int convert::replaceString(std::string& s, const std::string& oldstring, const s
         s.erase(pos, oldstring.length());
         s.insert(pos, newstring);
     }
-    return pos + newstring.length();
+    return s;
 }
 
-int convert::replaceAllString(std::string& s, const std::string& oldstring, const std::string& newstring)
+std::string convert::replaceAllString(std::string& s, const std::string& oldstring, const std::string& newstring)
 {
     int pos = s.find(oldstring);
     while (pos >= 0)
@@ -59,13 +69,16 @@ int convert::replaceAllString(std::string& s, const std::string& oldstring, cons
         s.insert(pos, newstring);
         pos = s.find(oldstring, pos + newstring.length());
     }
-    return pos + newstring.length();
+    return s;
 }
 
 void convert::replaceStringInFile(const std::string& oldfilename, const std::string& newfilename, const std::string& oldstring, const std::string& newstring)
 {
     std::string s = readStringFromFile(oldfilename);
-    if (s.length() <= 0) { return; }
+    if (s.length() <= 0)
+    {
+        return;
+    }
     replaceString(s, oldstring, newstring);
     writeStringToFile(s, newfilename);
 }
@@ -73,7 +86,10 @@ void convert::replaceStringInFile(const std::string& oldfilename, const std::str
 void convert::replaceAllStringInFile(const std::string& oldfilename, const std::string& newfilename, const std::string& oldstring, const std::string& newstring)
 {
     std::string s = readStringFromFile(oldfilename);
-    if (s.length() <= 0) { return; }
+    if (s.length() <= 0)
+    {
+        return;
+    }
     replaceAllString(s, oldstring, newstring);
     writeStringToFile(s, newfilename);
 }
@@ -154,21 +170,46 @@ unsigned convert::findTheLast(const std::string& s, const std::string& content)
     return prepos;
 }
 
-std::vector<std::string> convert::splitString(std::string str, std::string pattern)
+std::vector<std::string> convert::splitString(std::string str, std::string pattern, bool ignore_psspace)
 {
     std::string::size_type pos;
     std::vector<std::string> result;
-    str += pattern; //扩展字符串以方便操作
+    if (str.empty())
+    {
+        return result;
+    }
+    if (pattern.empty())
+    {
+        pattern = ",;| ";
+    }
+    str += pattern[0];    //扩展字符串以方便操作
+    bool have_space = pattern.find(" ") != std::string::npos;
     int size = str.size();
-
     for (int i = 0; i < size; i++)
     {
-        pos = str.find(pattern, i);
+        if (have_space)
+        {
+            //当空格作为分隔符时，连续空格视为一个
+            while (str[i] == ' ')
+            {
+                i++;
+            }
+        }
+        pos = str.find_first_of(pattern, i);
         if (pos < size)
         {
             std::string s = str.substr(i, pos - i);
+            if (ignore_psspace)
+            {
+                auto pre = s.find_first_not_of(" ");
+                auto suf = s.find_last_not_of(" ");
+                if (pre != std::string::npos && suf != std::string::npos)
+                {
+                    s = s.substr(pre, suf - pre + 1);
+                }
+            }
             result.push_back(s);
-            i = pos + pattern.size() - 1;
+            i = pos;
         }
     }
     return result;
@@ -179,3 +220,16 @@ bool convert::isProChar(char c)
     return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'z') || (c >= '(' && c <= ')');
 }
 
+std::string convert::convertCase(const std::string& s, int mode)
+{
+    std::string s1 = s;
+    if (mode > 0)
+    {
+        std::transform(s1.begin(), s1.end(), s1.begin(), ::toupper);
+    }
+    else
+    {
+        std::transform(s1.begin(), s1.end(), s1.begin(), ::tolower);
+    }
+    return s1;
+}

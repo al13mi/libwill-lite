@@ -13,9 +13,9 @@ void LayerDirect::init2()
 {
     out_total_ = prev_layer_->getOutTotal();
 
-    out_width_ = option_->getIntFromSection(layer_name_, "width", 0);
-    out_height_ = option_->getIntFromSection(layer_name_, "height", 0);
-    out_channel_ = option_->getIntFromSection(layer_name_, "channel", 1);
+    out_width_ = option_->getInt(layer_name_, "width", 0);
+    out_height_ = option_->getInt(layer_name_, "height", 0);
+    out_channel_ = option_->getInt(layer_name_, "channel", 1);
 
     if (out_total_ != out_width_ * out_height_ * out_channel_)
     {

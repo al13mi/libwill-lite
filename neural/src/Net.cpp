@@ -58,8 +58,8 @@ void Net::init(const std::string& in_name, const std::string& out_name)
     layer_in_name_ = in_name;
     layer_out_name_ = out_name;
     //aem和batch在一开始会用来设置网络的初始大小
-    aem_ = option_->getInt("aem", 0);
-    setLog(option_->getInt("output_net", 1));
+    aem_ = option_->getInt("", "aem", 0);
+    setLog(option_->getInt("", "output_net", 1));
     createAndConnectLayers();
     setLog(1);
 }
@@ -75,7 +75,7 @@ int Net::createAndConnectLayers()
         for (auto& name_layer : all_layer_map_)
         {
             auto& l = name_layer.second;
-            auto nexts = convert::splitString(option_->getStringFromSection(l->getName(), "next"), ",");
+            auto nexts = convert::splitString(option_->getString(l->getName(), "next"), ",");
             for (auto& next : nexts)
             {
                 convert::replaceAllString(next, " ", "");
@@ -134,7 +134,7 @@ int Net::createAndConnectLayers()
         if (section.find_first_of("layer") == 0)
         {
             LOG("Found layer %s\n", section.c_str());
-            auto ct = option_->getEnumFromSection(section, "type", LAYER_CONNECTION_NONE);
+            auto ct = option_->getEnum(section, "type", LAYER_CONNECTION_NONE);
             auto l = LayerCreator::createByConnectionType(ct);
             l->setOption(option_);
             l->setName(section);
@@ -358,9 +358,9 @@ void Net::malloc(int batch_size)
     }
 
     resetBatchSize(batch_);
-    if (option_->getInt("LoadNet") != 0)
+    if (option_->getInt("", "LoadNet") != 0)
     {
-        load(option_->getString("LoadFile"));
+        load(option_->getString("", "LoadFile"));
     }
 }
 

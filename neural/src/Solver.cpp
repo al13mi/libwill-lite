@@ -21,12 +21,12 @@ void Solver::destory()
 void Solver::init(Option* op, std::string section, int row, int batch, Matrix* W, Matrix* b)
 {
     batch_ = batch;
-    learn_rate_base_ = op->getRealFromSection2(section, "learn_rate_base", 1e-2);
+    learn_rate_base_ = op->getReal2(section, "learn_rate_base", 1e-2);
     learn_rate_ = learn_rate_base_;
-    weight_decay_ = op->getRealFromSection2(section, "weight_decay", 0);
-    weight_decay_l1_ = op->getRealFromSection2(section, "weight_decay_l1", 0);
+    weight_decay_ = op->getReal2(section, "weight_decay", 0);
+    weight_decay_l1_ = op->getReal2(section, "weight_decay_l1", 0);
 
-    normalized_dweight_ = op->getIntFromSection2(section, "normalized_ddeight", 0) != 0;
+    normalized_dweight_ = op->getInt2(section, "normalized_ddeight", 0) != 0;
 
     if (weight_decay_l1_ != 0)
     {
@@ -34,23 +34,23 @@ void Solver::init(Option* op, std::string section, int row, int batch, Matrix* W
     }
 
     //学习率调整方案相关参数
-    lr_adjust_method_ = op->getEnumFromSection2(section, "lr_adjust_method", ADJUST_LEARN_RATE_FIXED);
-    lr_gamma_ = op->getRealFromSection2(section, "lr_gamma", 1e-4);
-    lr_power_ = op->getRealFromSection2(section, "lr_power", 0.75);
-    lr_weight_scale_ = op->getRealFromSection2(section, "lr_weight_scale", 1);
-    lr_bias_scale_ = op->getRealFromSection2(section, "lr_bias_scale", 2);
-    lr_step_ = std::max(1, int(op->getRealFromSection2(section, "lr_step", 1)));
-    convert::findNumbers(op->getStringFromSection2(section, "lr_step_rate", "1"), &lr_step_rate_);
+    lr_adjust_method_ = op->getEnum2(section, "lr_adjust_method", ADJUST_LEARN_RATE_FIXED);
+    lr_gamma_ = op->getReal2(section, "lr_gamma", 1e-4);
+    lr_power_ = op->getReal2(section, "lr_power", 0.75);
+    lr_weight_scale_ = op->getReal2(section, "lr_weight_scale", 1);
+    lr_bias_scale_ = op->getReal2(section, "lr_bias_scale", 2);
+    lr_step_ = std::max(1, int(op->getReal2(section, "lr_step", 1)));
+    convert::findNumbers(op->getString2(section, "lr_step_rate", "1"), &lr_step_rate_);
 
     //求解器设定
-    solver_ = op->getEnumFromSection2(section, "solver", SOLVER_SGD);
+    solver_ = op->getEnum2(section, "solver", SOLVER_SGD);
     switch (solver_)
     {
     case SOLVER_SGD:
-        momentum_ = op->getRealFromSection2(section, "momentum", 0.9);
+        momentum_ = op->getReal2(section, "momentum", 0.9);
         break;
     case SOLVER_NAG:
-        nag_momentum_ = op->getRealFromSection2(section, "momentum", 0.9);
+        nag_momentum_ = op->getReal2(section, "momentum", 0.9);
         momentum_ = 0;
         if (W)
         {
@@ -63,8 +63,8 @@ void Solver::init(Option* op, std::string section, int row, int batch, Matrix* W
         break;
     case SOLVER_ADA_DELTA:
         momentum_ = 0;
-        ada_epsilon_ = op->getRealFromSection2(section, "ada_epsilon", 1e-6);
-        ada_rou_ = op->getRealFromSection2(section, "ada_rou", 0.95);
+        ada_epsilon_ = op->getReal2(section, "ada_epsilon", 1e-6);
+        ada_rou_ = op->getReal2(section, "ada_rou", 0.95);
         if (W)
         {
             ada_mean_gw2_ = new Matrix(W); // w's accumulation gradient

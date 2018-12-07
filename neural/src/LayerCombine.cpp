@@ -14,7 +14,7 @@ LayerCombine::~LayerCombine()
 //合并层如果仅有一个上层，前向执行浅复制，即相当于直连
 void LayerCombine::init2()
 {
-    combine_type_ = option_->getEnumFromSection(layer_name_, "combine_type", COMBINE_ADD);
+    combine_type_ = option_->getEnum(layer_name_, "combine_type", COMBINE_ADD);
 
     out_width_ = prev_layer_->getOutWidth();
     out_height_ = prev_layer_->getOutHeight();
@@ -67,7 +67,7 @@ void LayerCombine::init2()
     dX_ = new Matrix(X_);
 
     std::vector<real> factors;
-    convert::findNumbers(option_->getStringFromSection(layer_name_, "factors", ""), &factors);
+    convert::findNumbers(option_->getString(layer_name_, "factors", ""), &factors);
     factors_.resize(prev_layers_.size());
     for (int i = 0; i < factors_.size(); i++)
     {

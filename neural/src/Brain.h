@@ -33,7 +33,7 @@ protected:
     WorkModeType work_mode_ = WORK_MODE_NORMAL;
 
 public:
-    void setOptions(const std::string& name_values) { option_->setOptions(option_->getDefautlSection(), name_values); }
+    void setOptions(const std::string& name_values) { option_->setOptions("", name_values); }
     void setOptions(const std::string& section, const std::string& name_values) { option_->setOptions(section, name_values); }
     void setOptions(const std::string& section, std::vector<std::string> name_values) { option_->setOptions(section, name_values); }
     //载入ini文件，注意实际上可以载入多个

@@ -1,135 +1,134 @@
 #pragma once
-#include <string>
 #include "others/INIReader.h"
-#include "types.h"
-#include <algorithm>
 #include "others/libconvert.h"
+#include "types.h"
 #include <functional>
+#include <string>
 #include <typeinfo>
 
 //该类用于读取配置文件，并转换其中的字串设置为枚举
 //注意实数只获取双精度数，如果是单精度模式会包含隐式转换
 //获取整数的时候，先获取双精度数并强制转换
-struct Option
+class Option
 {
+public:
     Option();
-    Option(const std::string& filename) : Option() { loadIniFile(filename); }
-
-    void initMaps();
-
-    ~Option() { }
+    Option(const std::string& filename);
+    ~Option();
 
 private:
-    INIReader ini_reader_;
-    std::string default_section_ = "will";
-
-    std::string dealString(std::string str)
+    struct CompareSection
     {
-        std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-        convert::replaceAllString(str, "_", "");
-        return str;
-    }
+        const std::string default_section_ = "will";    //默认块
+        bool operator()(const std::string& l, const std::string& r) const;
+    };
+
+    struct CompareKey
+    {
+        bool operator()(const std::string& l, const std::string& r) const;
+    };
+
+    INIReader<CompareSection, CompareKey> ini_reader_;
 
 public:
     //载入ini文件
     void loadIniFile(const std::string& filename);
     void loadIniString(const std::string& content);
+    void loadSingleIniString(const std::string& content);
 
-    //默认section
-    void setDefautlSection(const std::string& section) { default_section_ = section; }
-    const std::string& getDefautlSection() { return default_section_; }
-
-    //从默认section提取
-    int getInt(const std::string& key, int default_value = 0)
+    //从指定块读取
+    int getInt(const std::string& section, const std::string& key, int default_value = 0);
+    double getReal(const std::string& section, const std::string& key, double default_value = 0.0);
+    std::string getString(const std::string& section, const std::string& key, const std::string& default_value = "");
+    template <typename T>
+    std::vector<T> getVector(const std::string& section, const std::string& key, const std::vector<T>& default_value = {})
     {
-        return int(getRealFromSection(default_section_, key, default_value));
-    }
-    double getReal(const std::string& key, double default_value = 0.0)
-    {
-        return getRealFromSection(default_section_, key, default_value);
-    }
-    std::string getString(const std::string& key, std::string default_value = "")
-    {
-        return getStringFromSection(default_section_, key, default_value);
+        std::vector<T> v;
+        auto str = getString(section, key);
+        convert::findNumbers(str, v);
+        return v;
     }
 
-    //从指定section提取
-    int getIntFromSection(const std::string& section, const std::string& key, int default_value = 0)
+    bool hasSection(const std::string& section) { return ini_reader_.hasSection(section); }
+    //bool hasOption(const std::string& section, const std::string key) { return ini_reader_.getv(section, key); }
+
+    std::vector<std::string> getAllSections() { return ini_reader_.getAllSections(); }
+
+    void setOption(const std::string& section, const std::string& key, const std::string& value)
     {
-        return int(ini_reader_.GetReal(section, key, default_value));
+        ini_reader_.setKey(section, key, value);
     }
-    double getRealFromSection(const std::string& section, const std::string& key, double default_value = 0.0)
-    {
-        return ini_reader_.GetReal(section, key, default_value);
-    }
-    std::string getStringFromSection(const std::string& section, const std::string& key, std::string default_value = "");
+    void setOptions(const std::string& section, const std::string& pairs);
+    void setOptions(const std::string& section, const std::vector<std::string>& pairs);
 
-    //先找公共部分，再找section部分
-    int getIntFromSection2(const std::string& section, const std::string& key, int default_value);
-    real getRealFromSection2(const std::string& section, const std::string& key, real default_value);
-    std::string getStringFromSection2(const std::string& section, const std::string& key, std::string default_value);
+    void print();
 
-    bool hasSection(const std::string section) { return ini_reader_.HasSection(section); }
-    bool hasOption(const std::string section, const std::string key) { return ini_reader_.HasOption(section, key); }
-
-    std::vector<std::string> getAllSections() { return ini_reader_.GetAllSections(); }
-    void setOption(std::string section, std::string key, std::string value) { ini_reader_.SetOption(section, key, value); }
-    void setOptions(std::string section, std::string pairs);
-    void setOptions(std::string section, std::vector<std::string> pairs);
-
-    void print() { ini_reader_.print(); }
-
+    //以下为枚举值的处理
 private:
-    std::map<std::pair<std::string, std::string>, int> map_;
-    template<typename T>
+    std::map<std::string, std::map<std::string, int, CompareKey>> enum_map_;
+    std::map<std::string, std::map<int, std::string>> enum_map_reverse_;
+    //注册枚举值
+    template <typename T>
     void registerEnum(std::vector<std::pair<std::string, T>> members)
     {
         for (auto m : members)
         {
-            map_[{typeid(T).name(), dealString(m.first)}] = m.second;
+            enum_map_[typeid(T).name()][m.first] = m.second;
+            //反查map只保留第一个，注册时需注意顺序
+            if (enum_map_reverse_[typeid(T).name()].count(m.second) == 0)
+            {
+                enum_map_reverse_[typeid(T).name()][m.second] = m.first;
+            }
         }
     }
+    void initEnums();
+
 public:
-    template<typename T>
-    T transEnum(std::string value_str)
+    //将字串转为枚举值
+    template <typename T>
+    T transEnum(const std::string& value_str)
     {
-        return T(map_[{ typeid(T).name(), value_str }]);
+        return T(enum_map_[typeid(T).name()][value_str]);
     }
-
-    template<typename T>
-    T getEnum(std::string key, T default_value = T(0))
+    //从配置中直接读出枚举值
+    template <typename T>
+    T getEnum(const std::string& section, const std::string& key, T default_value = T(0))
     {
-        return getEnumFromSection<T>(default_section_, key, default_value);
-    }
-
-    template<typename T>
-    T getEnumFromSection(std::string section, std::string key, T default_value = T(0))
-    {
-        std::string value_str = getStringFromSection(section, dealString(key), "");
-        value_str = dealString(value_str);
-        std::pair<std::string, std::string> p = { typeid(T).name(), value_str };
-        if (map_.count(p) > 0)
+        std::string value_str = getString(section, key);
+        if (enum_map_[typeid(T).name()].count(value_str) > 0)
         {
-            return T(map_[p]);
+            return T(enum_map_[typeid(T).name()][value_str]);
         }
         else
         {
             if (!value_str.empty())
             {
-                fprintf(stderr, "Undefined value %s for %s, please check the spelling.\n", value_str.c_str(), key.c_str());
+                fprintf(stderr, "Warning: undefined value \"%s\" for %s, set to %s!\n", value_str.c_str(), key.c_str(), getStringFromEnum(T(0)).c_str());
             }
             return default_value;
         }
     }
 
-    template<typename T>
-    T getEnumFromSection2(std::string section, std::string key, T default_value = T(0))
+    //反查枚举值为字串
+    template <typename T>
+    std::string getStringFromEnum(T e)
     {
-        T a = getEnum(key, default_value);
-        a = getEnumFromSection(section, key, a);
-        return a;
+        return enum_map_reverse_[typeid(T).name()][e];
     }
 
+public:
+    //先读公共块，再读指定块
+#define GET_VALUE2(type, name) \
+    type name##2(const std::string& s, const std::string& k, type v) { return name(s, k, name("", k, v)); }
+
+    GET_VALUE2(int, getInt)
+    GET_VALUE2(real, getReal)
+    GET_VALUE2(std::string, getString)
+
+    template <typename T>
+    GET_VALUE2(T, getEnum)
+
+#undef GET_VALUE2
 };
 
-#define OPTION_GET_VALUE_INT(op, v, default_v) v = op->getInt(#v, default_v)
+#define OPTION_GET_VALUE_INT(op, v, default_v) v = op->getInt("", #v, default_v)

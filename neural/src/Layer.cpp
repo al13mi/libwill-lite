@@ -57,8 +57,8 @@ void Layer::init()
 
     activer_->init(option_, layer_name_, getConnection2());
 
-    need_bias_ = option_->getIntFromSection(layer_name_, "need_bias", 1) != 0;
-    need_train_ = option_->getIntFromSection(layer_name_, "need_train", 1) != 0;
+    need_bias_ = option_->getInt(layer_name_, "need_bias", 1) != 0;
+    need_train_ = option_->getInt(layer_name_, "need_train", 1) != 0;
 
     //不同类层分别设置，子类中不处理A！
     init2();
@@ -91,7 +91,7 @@ void Layer::init()
 
     //输出本层信息
     LOG("  name: %s\n", layer_name_.c_str());
-    LOG("  type: %s\n", option_->getStringFromSection(layer_name_, "type").c_str());
+    LOG("  type: %s\n", option_->getString(layer_name_, "type").c_str());
     LOG("  out nodes: %d\n", out_total_);
     LOG("  width, height, channel: %d, %d, %d\n", out_width_, out_height_, out_channel_);
     if (W_)
@@ -102,7 +102,7 @@ void Layer::init()
     //LOG("  learn rate = %g, weight decay = %g, momentum = %g, gamma = %g, power = %g\n",
     //learn_rate_base_, weight_decay_, momentum_, lr_gamma_, lr_power_);
     LOG("  have bias: %d\n", need_bias_);
-    //LOG("  solver: %s\n", option_->getStringFromSection2(layer_name_, "solver", "sgd").c_str());
+    //LOG("  solver: %s\n", option_->getString2(layer_name_, "solver", "sgd").c_str());
     if (!next_layers_.empty())
     {
         LOG("  next layer(s): ");
@@ -208,7 +208,7 @@ void Layer::updateParameters()
 
 void Layer::save(FILE* fout)
 {
-    if (option_->getInt("save_all_layers", 1) || option_->getIntFromSection(layer_name_, "save", 0))
+    if (option_->getInt("", "save_all_layers", 1) || option_->getInt(layer_name_, "save", 0))
     {
         if (W_) { W_->save(fout); }
         if (b_) { b_->save(fout); }
@@ -221,7 +221,7 @@ void Layer::load(FILE* fin)
     //随便激活一次，初始化部分值
     updateA();
     updateDX();
-    if (option_->getInt("load_all_layers", 1) || option_->getIntFromSection(layer_name_, "load", 0))
+    if (option_->getInt("", "load_all_layers", 1) || option_->getInt(layer_name_, "load", 0))
     {
         if (W_) { W_->load(fin); }
         if (b_) { b_->load(fin); }

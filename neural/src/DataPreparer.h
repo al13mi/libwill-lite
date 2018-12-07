@@ -64,9 +64,9 @@ public:
 };
 
 #define SECTION section_
-#define OPTION_GET_INT(a) do { a = option_->getIntFromSection(SECTION, #a, a); LOG("%s\b: %d\n", #a, a); } while (0)
-#define OPTION_GET_INT2(a, v) do { a = option_->getIntFromSection(SECTION, #a, v); LOG("%s\b: %d\n", #a, a); } while (0)
-#define OPTION_GET_NUMVECTOR(a, v, n) do { convert::findNumbers(option_->getStringFromSection(SECTION, #a), &a); fillNumVector(a, v, n); LOG("%s\b: ", #a); printNumVector(a); } while (0)
-#define OPTION_GET_REAL(a) do { a = option_->getRealFromSection(SECTION, #a, a); LOG("%s\b: %g\n", #a, a); } while (0)
-#define OPTION_GET_REAL2(a, v) do { a = option_->getRealFromSection(SECTION, #a, v); LOG("%s\b: %g\n", #a, a); } while (0)
-#define OPTION_GET_STRING(a) do { a = option_->getRealFromSection(SECTION, #a, ""); } while (0)
+#define OPTION_GET_INT(a) do { a = option_->getInt(SECTION, #a, a); LOG("%s\b: %d\n", #a, a); } while (0)
+#define OPTION_GET_INT2(a, v) do { a = option_->getInt(SECTION, #a, v); LOG("%s\b: %d\n", #a, a); } while (0)
+#define OPTION_GET_NUMVECTOR(a, v, n) do { convert::findNumbers(option_->getString(SECTION, #a), &a); fillNumVector(a, v, n); LOG("%s\b: ", #a); printNumVector(a); } while (0)
+#define OPTION_GET_REAL(a) do { a = option_->getReal(SECTION, #a, a); LOG("%s\b: %g\n", #a, a); } while (0)
+#define OPTION_GET_REAL2(a, v) do { a = option_->getReal(SECTION, #a, v); LOG("%s\b: %g\n", #a, a); } while (0)
+#define OPTION_GET_STRING(a) do { a = option_->getReal(SECTION, #a, ""); } while (0)

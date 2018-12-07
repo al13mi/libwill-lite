@@ -15,15 +15,15 @@ void LayerPooling::init2()
 {
     out_channel_ = prev_layer_->getOutChannel();
 
-    reverse_ = option_->getIntFromSection(layer_name_, "reverse", 0);
+    reverse_ = option_->getInt(layer_name_, "reverse", 0);
 
-    window_width_ = std::min(option_->getIntFromSection(layer_name_, "window_width", 1), prev_layer_->getOutWidth());
-    window_height_ = std::min(option_->getIntFromSection(layer_name_, "window_height", window_width_), prev_layer_->getOutHeight());
+    window_width_ = std::min(option_->getInt(layer_name_, "window_width", 1), prev_layer_->getOutWidth());
+    window_height_ = std::min(option_->getInt(layer_name_, "window_height", window_width_), prev_layer_->getOutHeight());
 
-    stride_width_ = option_->getIntFromSection(layer_name_, "stride_width", window_width_);
-    stride_height_ = option_->getIntFromSection(layer_name_, "stride_height", window_height_);
-    padding_width_ = option_->getIntFromSection(layer_name_, "padding_width", 0);
-    padding_height_ = option_->getIntFromSection(layer_name_, "padding_height", 0);
+    stride_width_ = option_->getInt(layer_name_, "stride_width", window_width_);
+    stride_height_ = option_->getInt(layer_name_, "stride_height", window_height_);
+    padding_width_ = option_->getInt(layer_name_, "padding_width", 0);
+    padding_height_ = option_->getInt(layer_name_, "padding_height", 0);
 
     //网络设计者应注意，此处如不能整除，结果通常不正常
     if (reverse_ == 0)
@@ -41,15 +41,15 @@ void LayerPooling::init2()
     X_ = new Matrix(out_width_, out_height_, out_channel_, batch_);
     dX_ = new Matrix(X_);
 
-    pooling_type_ = option_->getEnumFromSection(layer_name_, "pool_type", reverse_ == 0 ? POOLING_MAX : POOLING_AVERAGE_NOPADDING);
+    pooling_type_ = option_->getEnum(layer_name_, "pool_type", reverse_ == 0 ? POOLING_MAX : POOLING_AVERAGE_NOPADDING);
 
-    nearest_ = option_->getIntFromSection(layer_name_, "nearest", 1);
+    nearest_ = option_->getInt(layer_name_, "nearest", 1);
 
     layer_ref_ = this;
     //如果是最大值反池化，则需要一个参考的pooling层
     if (reverse_ && pooling_type_ == POOLING_MAX)
     {
-        layer_ref_ = dynamic_cast<Net*>(net_)->getLayerByName(option_->getStringFromSection(layer_name_, "pooling_ref"));
+        layer_ref_ = dynamic_cast<Net*>(net_)->getLayerByName(option_->getString(layer_name_, "pooling_ref"));
     }
 }
 
