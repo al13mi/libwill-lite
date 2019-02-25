@@ -43,9 +43,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\others\libconvert.cpp">
-      <Filter>others</Filter>
-    </ClCompile>
     <ClCompile Include="src\DataPreparer.cpp">
       <Filter>data</Filter>
     </ClCompile>
@@ -139,11 +136,11 @@
     <ClCompile Include="src\LayerCombine.cpp">
       <Filter>layer</Filter>
     </ClCompile>
+    <ClCompile Include="src\others\convert.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\others\libconvert.h">
-      <Filter>others</Filter>
-    </ClInclude>
     <ClInclude Include="src\others\INIReader.h">
       <Filter>others</Filter>
     </ClInclude>
@@ -261,6 +258,9 @@
     </ClInclude>
     <ClInclude Include="src\LayerCombine.h">
       <Filter>layer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\others\convert.h">
+      <Filter>others</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

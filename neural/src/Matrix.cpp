@@ -36,8 +36,7 @@ Matrix::Matrix(int m, int n, MatrixDataType try_inside, CudaType try_cuda)
 
 //4阶张量形式构造函数，用于池化和卷积
 //当矩阵是张量时，实际上原本的列数毫无意义，但是无论张量还是矩阵，组数都是最后一维
-Matrix::Matrix(int w, int h, int c, int n, MatrixDataType try_inside /*= MatrixData_Inside*/, CudaType try_cuda /*= Cuda_GPU*/)
-    : Matrix(w * h * c, n, try_inside, try_cuda)
+Matrix::Matrix(int w, int h, int c, int n, MatrixDataType try_inside /*= MatrixData_Inside*/, CudaType try_cuda /*= Cuda_GPU*/) : Matrix(w * h * c, n, try_inside, try_cuda)
 {
     width_ = w;
     height_ = h;
@@ -50,14 +49,11 @@ Matrix::Matrix(int w, int h, int c, int n, MatrixDataType try_inside /*= MatrixD
 }
 
 //根据已知矩阵的维度创建一个新矩阵
-Matrix::Matrix(Matrix* src, MatrixDataType try_inside, CudaType try_cuda)
-    : Matrix(src->width_, src->height_, src->channel_, src->number_, try_inside, try_cuda)
+Matrix::Matrix(Matrix* src, MatrixDataType try_inside, CudaType try_cuda) : Matrix(src->width_, src->height_, src->channel_, src->number_, try_inside, try_cuda)
 {
-
 }
 
-Matrix::Matrix(int w, int h, int c, int n, real* data, CudaType try_cuda /*= CUDA_GPU*/)
-    : Matrix(w * h * c, n, MATRIX_DATA_OUTSIDE, try_cuda)
+Matrix::Matrix(int w, int h, int c, int n, real* data, CudaType try_cuda /*= CUDA_GPU*/) : Matrix(w * h * c, n, MATRIX_DATA_OUTSIDE, try_cuda)
 {
     data_ = data;
 }
@@ -246,11 +242,11 @@ void Matrix::copyDataInFromHost(real* src, int64_t size)
 {
     if (cuda_type_ == CUDA_GPU)
     {
-        cudaMemcpy(data_, src, int(sizeof(real)*std::min(size, data_size_)), cudaMemcpyHostToDevice);
+        cudaMemcpy(data_, src, int(sizeof(real) * std::min(size, data_size_)), cudaMemcpyHostToDevice);
     }
     else
     {
-        memcpy(data_, src, int(sizeof(real)*std::min(size, data_size_)));
+        memcpy(data_, src, int(sizeof(real) * std::min(size, data_size_)));
     }
 }
 
@@ -259,11 +255,11 @@ void Matrix::copyDataOutToHost(real* dst, int64_t size)
 {
     if (cuda_type_ == CUDA_GPU)
     {
-        cudaMemcpy(dst, data_, int(sizeof(real)*std::min(size, data_size_)), cudaMemcpyDeviceToHost);
+        cudaMemcpy(dst, data_, int(sizeof(real) * std::min(size, data_size_)), cudaMemcpyDeviceToHost);
     }
     else
     {
-        memcpy(dst, data_, int(sizeof(real)*std::min(size, data_size_)));
+        memcpy(dst, data_, int(sizeof(real) * std::min(size, data_size_)));
     }
 }
 
@@ -519,7 +515,7 @@ real* Matrix::mallocCPU_dataToCPU()
     if (cuda_type_ == CUDA_GPU)
     {
         auto temp = new real[data_size_];
-        cudaMemcpy(temp, data_, sizeof(real)*data_size_, cudaMemcpyDeviceToHost);
+        cudaMemcpy(temp, data_, sizeof(real) * data_size_, cudaMemcpyDeviceToHost);
         return temp;
     }
     else
@@ -561,7 +557,7 @@ void Matrix::dataToGPU_freeCPU(real* temp)
 }
 
 //将前面几列复制到整个矩阵
-void Matrix::repeat(int c/*=1*/)
+void Matrix::repeat(int c /*=1*/)
 {
     if (cuda_type_ == CUDA_GPU)
     {
@@ -630,7 +626,7 @@ real Matrix::sum()
 
 //以同一个值初始化矩阵
 //inc不为零时仅用于测试，不要用于实际计算！
-void Matrix::initData(real v, int inc/*=0*/)
+void Matrix::initData(real v, int inc /*=0*/)
 {
     if (!data_) { return; }
     if (cuda_type_ == CUDA_GPU && inc == 0)
@@ -658,7 +654,6 @@ void Matrix::initData(real v, int inc/*=0*/)
         dataToGPU_freeCPU(temp);
     }
 }
-
 
 //随机数初始化矩阵，注意这个函数调用次数很少
 void Matrix::initRandom(int seed /*= 0*/)
@@ -907,8 +902,16 @@ void Matrix::sign(Matrix* A, Matrix* R, real v /*= 1*/, real section /*= 1e-4*/)
     {
         for (int i = 0; i < A->data_size_; i++)
         {
-            if (A->data_[i] > section) { R->data_[i] = 1; continue; }
-            if (A->data_[i] < -section) { R->data_[i] = -1; continue; }
+            if (A->data_[i] > section)
+            {
+                R->data_[i] = 1;
+                continue;
+            }
+            if (A->data_[i] < -section)
+            {
+                R->data_[i] = -1;
+                continue;
+            }
             R->data_[i] = 0;
         }
     }
@@ -987,7 +990,6 @@ void Matrix::elementDiv(Matrix* A, Matrix* B, Matrix* R, real a, real b)
         }
     }
 }
-
 
 void Matrix::concatByChannel(std::vector<Matrix*> A_vector, Matrix* R)
 {

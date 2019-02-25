@@ -6,8 +6,7 @@ Option::Option()
     initEnums();
 }
 
-Option::Option(const std::string& filename)
-    : Option()
+Option::Option(const std::string& filename) : Option()
 {
     loadIniFile(filename);
 }

@@ -69,7 +69,7 @@
       <ForceSymbolReferences>%(ForceSymbolReferences)</ForceSymbolReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>will-cuda.lib;cudart.lib;cublas.lib;cudnn.lib;curand.lib;libopenblas.lib;nvml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>will-cuda.lib;cudart.lib;cublas.lib;cudnn.lib;curand.lib;openblas.lib;nvml.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>./lib/x64;$(CUDA_PATH)/lib/x64;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
@@ -105,7 +105,7 @@
       </ModuleDefinitionFile>
     </Link>
     <Lib>
-      <AdditionalDependencies>will-cuda.lib;cudart.lib;cublas.lib;cudnn.lib;curand.lib;libopenblas.lib;nvml.lib</AdditionalDependencies>
+      <AdditionalDependencies>will-cuda.lib;cudart.lib;cublas.lib;cudnn.lib;curand.lib;openblas.lib;nvml.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>./lib/x64;$(CUDA_PATH)/lib/x64;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
@@ -141,7 +141,7 @@
     <ClCompile Include="src\LayerPooling.cpp" />
     <ClCompile Include="src\Brain.cpp" />
     <ClCompile Include="src\Neural.cpp" />
-    <ClCompile Include="src\others\libconvert.cpp" />
+    <ClCompile Include="src\others\convert.cpp" />
     <ClCompile Include="src\Solver.cpp" />
     <ClCompile Include="src\Modifier.cpp" />
   </ItemGroup>
@@ -174,7 +174,7 @@
     <ClInclude Include="src\MNIST.h" />
     <ClInclude Include="src\Neural.h" />
     <ClInclude Include="src\others\INIReader.h" />
-    <ClInclude Include="src\others\libconvert.h" />
+    <ClInclude Include="src\others\convert.h" />
     <ClInclude Include="src\Solver.h" />
     <ClInclude Include="src\Modifier.h" />
     <ClInclude Include="src\Timer.h" />

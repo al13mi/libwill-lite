@@ -1,6 +1,6 @@
 #include "Brain.h"
 #include "Random.h"
-#include "others/libconvert.h"
+#include "others/convert.h"
 #include <algorithm>
 #include "File.h"
 #include "Color.h"
